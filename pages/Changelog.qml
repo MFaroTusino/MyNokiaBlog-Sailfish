@@ -3,27 +3,32 @@ import Sailfish.Silica 1.0
 
 Page {
     id: page
-    Column {
-    width: page.width
-    spacing: theme.paddingLarge
+    onStatusChanged: {
+        if (status == PageStatus.Inactive) {
+            flickArea.contentY = 0
+        }
+    }
+
     PageHeader {
+        id: pageHeader
         title: "Changelog"
     }
     Flickable {
-               id: flickArea
-                anchors.fill: parent
-                contentWidth: parent.width; contentHeight: parent.height
-                flickableDirection: Flickable.VerticalFlick
-                clip: false
-                    TextArea {
-                         readOnly: true
-                         width: parent.width
-                         anchors.left: parent.left; anchors.leftMargin: theme.paddingLarge
-                         text: CHANGELOG
-                         wrapMode: Text.Wrap
-                         color: theme.primaryColor
-                         font.pixelSize: theme.fontSizeLarge
+        id: flickArea
+        anchors.top: pageHeader.bottom; anchors.bottom: page.bottom
+        anchors.left: page.left; anchors.leftMargin: theme.paddingLarge
+        anchors.right: page.right; anchors.rightMargin: theme.paddingMedium
+        contentWidth: flickArea.width; contentHeight: textArea.height
+        flickableDirection: Flickable.VerticalFlick
+        clip: true
+        TextArea {
+            id: textArea
+            readOnly: true
+            width: flickArea.width
+            text: CHANGELOG
+            wrapMode: Text.Wrap
+            color: theme.primaryColor
+            font.pixelSize: theme.fontSizeLarge
+        }
     }
-    }
-}
 }
