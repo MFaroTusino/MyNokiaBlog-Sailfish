@@ -9,14 +9,21 @@ Page {
     PageHeader {
         title: "Changelog"
     }
-    TextArea {
-        readOnly: true
-        width: parent.width
-        anchors.left: parent.left; anchors.leftMargin: theme.paddingLarge
-        text: CHANGELOG
-        wrapMode: Text.Wrap
-        color: theme.secondaryHighlightColor
-        font.pixelSize: theme.fontSizeLarge
+    Flickable {
+               id: flickArea
+                anchors.fill: parent
+                contentWidth: parent.width; contentHeight: parent.height
+                flickableDirection: Flickable.VerticalFlick
+                clip: false
+                    TextArea {
+                         readOnly: true
+                         width: parent.width
+                         anchors.left: parent.left; anchors.leftMargin: theme.paddingLarge
+                         text: CHANGELOG
+                         wrapMode: Text.Wrap
+                         color: theme.primaryColor
+                         font.pixelSize: theme.fontSizeLarge
+    }
     }
 }
 }
