@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=My Nokia Blog
+Icon=icon-launcher-gallery
+Exec=invoker --type=j -s /opt/sdk/bin/mynokiablog
+Comment=Sailfish UI application
+
+
