@@ -11,6 +11,7 @@
 #include <QDeclarativeEngine>
 #include <QDeclarativeContext>
 #include <QDeclarativeView>
+//#include <QNetworkAccessManager>
 
 #ifdef HAS_BOOSTER
 #include <MDeclarativeCache>

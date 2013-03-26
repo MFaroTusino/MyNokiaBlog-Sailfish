@@ -15,8 +15,12 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
             }
             MenuItem{
+                text: "Recent Posts"
+                onClicked: pageStack.push(Qt.resolvedUrl("Index.qml"))
+            }
+            MenuItem{
                 text: "Search"
-                onClicked: pageStack.push(Qt.resolvedUrl("Search.qml"))
+                //No onClicked as this causes recursive browsing
             }
         }
 
@@ -29,10 +33,10 @@ Page {
             width: page.width
             spacing: theme.paddingLarge
             PageHeader {
-                title: "Recent Posts"
+                title: "Search"
             }
             Label {
-                x: theme.paddingLarge
+                anchors.left: parent.left; anchors.leftMargin: theme.paddingLarge
                 text: "Hello Sailors"
                 color: theme.secondaryHighlightColor
                 font.pixelSize: theme.fontSizeLarge

@@ -9,6 +9,7 @@ Page {
         }
     }
 
+
     PageHeader {
         id: pageHeader
         title: "Changelog"

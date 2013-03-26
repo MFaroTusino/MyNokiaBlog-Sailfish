@@ -3,12 +3,21 @@ import Sailfish.Silica 1.0
 
 Rectangle {
     anchors.fill: parent
-    color: "black"
+    color: black
+    Image {
+        anchors.centerIn: parent
+        id: coverImage
+        source: "/home/nemo/Pictures/5.jpg" //featured image from post
+    }
     
     Label {
         id: label
-        anchors.centerIn: parent
-        text: "My Cover"
+        color: theme.highlightColor
+        font.pixelSize: theme.fontSizeLarge
+        anchors.left: parent.left
+        text: "Most Recent Post Title"
+        wrapMode: Text.Wrap
+        width: parent.width
     }
     
     CoverActionList {
@@ -16,10 +25,7 @@ Rectangle {
         
         CoverAction {
             iconSource: "image://theme/icon-cover-next"
-        }
-        
-        CoverAction {
-            iconSource: "image://theme/icon-cover-pause"
+            onTriggered: coverImage.source="/home/nemo/Pictures/mnb.png"
         }
     }
 }

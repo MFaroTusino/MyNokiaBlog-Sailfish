@@ -3,6 +3,30 @@ import Sailfish.Silica 1.0
 Page {
     id: page
 
+    // To enable PullDownMenu, place our content in a SilicaFlickable
+    SilicaFlickable {
+        anchors.fill: parent
+
+        // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
+        PullDownMenu {
+            MenuItem {
+                text: "About"
+                //No onClicked action as this would cause recusrive browsing
+            }
+            MenuItem{
+                text: "Recent Posts"
+                onClicked: pageStack.push(Qt.resolvedUrl("Index.qml"))
+            }
+
+            MenuItem{
+                text: "Search"
+                onClicked: pageStack.push(Qt.resolvedUrl("Search.qml"))
+            }
+        }
+
+        // Tell SilicaFlickable the height of its content.
+        contentHeight: childrenRect.height
+
     ListModel {
         id: modelContacts
         ListElement {
@@ -135,4 +159,4 @@ Page {
         }
     }
 }
-
+}

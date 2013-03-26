@@ -14,6 +14,14 @@ Page {
                 text: "About"
                 onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
             }
+            MenuItem{
+                text: "Refresh posts"
+               // onClicked: //refresh()
+            }
+            MenuItem{
+                text: "Search"
+                onClicked: pageStack.push(Qt.resolvedUrl("Search.qml"))
+            }
         }
         
         // Tell SilicaFlickable the height of its content.
@@ -25,11 +33,11 @@ Page {
             width: page.width
             spacing: theme.paddingLarge
             PageHeader {
-                title: "UI Template"
+                title: "Recent Posts"
             }
             Label { 
-                x: theme.paddingLarge
-                text: "Hello Sailors" 
+                anchors.left: parent.left; anchors.leftMargin: theme.paddingLarge
+                text: "List of recent posts go here"
                 color: theme.secondaryHighlightColor
                 font.pixelSize: theme.fontSizeLarge
             }

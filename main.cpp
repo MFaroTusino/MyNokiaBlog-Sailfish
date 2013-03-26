@@ -3,6 +3,7 @@
 #include <QtDeclarative/QDeclarativeContext>
 #include <QtDeclarative/qdeclarative.h>
 #include <QFile>
+//#include <QNetworkAccessManager>
 #include <QTextStream>
 #include "sailfishapplication.h"
 
