@@ -7,7 +7,8 @@ Page {
 
     PostModel {
         id: postModel
-        Component.onCompleted: load("http://unleashthephones.com/api/get_recent_posts/")
+        url: "http://unleashthephones.com/api"
+        Component.onCompleted: load()
         onErrorChanged: console.debug(error)
     }
 
@@ -15,6 +16,8 @@ Page {
     SilicaListView {
         id: view
         anchors.fill: parent
+        interactive: !postModel.loading
+        opacity: !postModel.loading ? 1 : 0.5
         header: PageHeader {
             title: qsTr("Recent Posts")
         }
@@ -43,14 +46,14 @@ Page {
             }
             MenuItem{
                 text: qsTr("Reload")
-                onClicked: postModel.load("http://unleashthephones.com/api/get_recent_posts/")
+                onClicked: postModel.load()
             }
         }
 
         PushUpMenu {
             MenuItem {
                 text: qsTr("More")
-                onClicked: postModel.loadMore("http://unleashthephones.com/api/get_recent_posts/")
+                onClicked: postModel.loadMore()
             }
 
             MenuItem {
@@ -60,6 +63,23 @@ Page {
         }
 
         VerticalScrollDecorator {flickable: view}
+    }
+
+    ProgressCircle {
+        id: progress
+        visible: postModel.loading
+        anchors.centerIn: parent
+        value: postModel.progress
+        onVisibleChanged: {
+            progress.value = 0
+        }
+
+        Timer {
+            interval: 16
+            repeat: true
+            running: progress.visible
+            onTriggered: progress.value = (progress.value + 0.005) % 1.0
+        }
     }
 }
 

@@ -44,6 +44,11 @@ QString PostModel::error() const
     return m_error;
 }
 
+QUrl PostModel::url() const
+{
+    return m_url;
+}
+
 int PostModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
@@ -69,11 +74,30 @@ QVariant PostModel::data(const QModelIndex &index, int role) const
     }
 }
 
-void PostModel::load(const QUrl &url, const QByteArray &arguments)
+void PostModel::setUrl(const QUrl &url)
+{
+    if (m_url != url) {
+        m_url = url;
+        emit urlChanged();
+    }
+}
+
+void PostModel::load()
 {
     if (m_reply) {
         return;
     }
+
+    if (m_url.isEmpty()) {
+        return;
+    }
+
+    QUrl url = m_url;
+    QString path = url.path();
+    path.append("/get_recent_posts/");
+    url.setPath(path);
+
+    qDebug() << url;
 
     m_page = 1;
     m_count = 0;
@@ -87,20 +111,29 @@ void PostModel::load(const QUrl &url, const QByteArray &arguments)
     QNetworkRequest request (url);
     request.setRawHeader("User-Agent", USER_AGENT);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    m_reply = m_networkAccessManager->post(request, arguments);
+    m_reply = m_networkAccessManager->post(request, QByteArray());
     connect(m_reply, SIGNAL(finished()), this, SLOT(slotFinished()));
     emit loadingChanged();
 }
 
-void PostModel::loadMore(const QUrl &url)
+void PostModel::loadMore()
 {
     if (m_reply) {
+        return;
+    }
+
+    if (m_url.isEmpty()) {
         return;
     }
 
     if (m_count == 0) {
         return;
     }
+
+    QUrl url = m_url;
+    QString path = url.path();
+    path.append("/get_recent_posts/");
+    url.setPath(path);
 
     m_page ++;
     QByteArray arguments = QByteArray("count=");
@@ -111,6 +144,8 @@ void PostModel::loadMore(const QUrl &url)
     QNetworkRequest request (url);
     request.setRawHeader("User-Agent", USER_AGENT);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+    qDebug() << url << arguments;
     m_reply = m_networkAccessManager->post(request, arguments);
     connect(m_reply, SIGNAL(finished()), this, SLOT(slotFinished()));
     emit loadingChanged();
@@ -147,6 +182,7 @@ void PostModel::slotFinished()
     m_reply = 0;
     if (!JSON_CHECK_DOCUMENT(jsonDocument)) {
         setError("Invalid JSON document got from server");
+
         emit loadingChanged();
         emit loaded();
         return;
@@ -187,4 +223,3 @@ void PostModel::slotFinished()
     emit loadingChanged();
     emit loaded();
 }
-

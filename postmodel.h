@@ -2,6 +2,7 @@
 #define POSTMODEL_H
 
 #include <QtCore/QAbstractListModel>
+#include <QtCore/QUrl>
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -16,6 +17,7 @@ class PostModel: public QAbstractListModel
     Q_PROPERTY(int count READ count NOTIFY countChanged)
     Q_PROPERTY(bool loading READ loading NOTIFY loadingChanged)
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
+    Q_PROPERTY(QUrl url READ url WRITE setUrl NOTIFY urlChanged)
 public:
     enum PostModelRoles {
         PostRole
@@ -29,15 +31,18 @@ public:
     int count() const;
     bool loading() const;
     QString error() const;
+    QUrl url() const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
 public slots:
-    void load(const QUrl &url, const QByteArray &arguments = QByteArray());
-    void loadMore(const QUrl &url);
+    void setUrl(const QUrl &url);
+    void load();
+    void loadMore();
 signals:
     void countChanged();
     void loadingChanged();
     void errorChanged();
+    void urlChanged();
     void loaded();
 protected:
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -56,9 +61,9 @@ private:
     QString m_error;
     int m_page;
     int m_count;
+    QUrl m_url;
 private slots:
     void slotFinished();
-
 };
 
 #endif // POSTMODEL_H
