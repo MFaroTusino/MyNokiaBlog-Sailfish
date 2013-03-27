@@ -1,9 +1,11 @@
-*****My Nokia Blog - Sailfish Edition ******
+                         *****Wordpress-viewer*****
 
-This project is a client for mynokiablog.com
+This is an open-source project that is designed to access your wordpress content, via a JSON plugin.
 
-The intention of this project is to establish a "starter kit" for other wordpress sites, that will display posts, comments, allow for posting and more.
+The project uses Qt to display and search for articles, as well as view and post comments. This *should* work on virtually any wordpress-based site (self-hosted or not), as long as the JSON plugin linked in this post is installed to your chosen site.
+
+The current project is built using Sailfish Silica Components, but, Qt being extremely flexible, can see this run on any Qt-supported platform, with minor changes to the QML files (and platfrom specific package dependencies).
 
 Currently maintained by Michael Faro-Tusino (MFaroTusino) and Lucien Xu (SfietKonstantin)
 
-*****End*****
+ 
