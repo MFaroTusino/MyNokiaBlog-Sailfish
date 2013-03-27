@@ -91,7 +91,10 @@ Page {
         text: "0.0.1~a1"
         color: theme.highlightColor
         font.pixelSize: theme.fontSizeSmall
-        MouseArea { anchors.fill: versionNumber; onClicked: pageStack.push(Qt.resolvedUrl("Changelog.qml"))}
+        MouseArea {
+            anchors.fill: versionNumber
+            onClicked: pageStack.push(Qt.resolvedUrl("Changelog.qml"))
+        }
     }
 
 

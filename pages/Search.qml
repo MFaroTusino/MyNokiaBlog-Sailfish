@@ -16,7 +16,7 @@ Page {
             }
             MenuItem{
                 text: "Recent Posts"
-                onClicked: pageStack.push(Qt.resolvedUrl("Index.qml"))
+                onClicked: pageStack.replace(Qt.resolvedUrl("Index.qml"))
             }
             MenuItem{
                 text: "Search"
