@@ -19,7 +19,6 @@ include(sailfishapplication/sailfishapplication.pri)
 OTHER_FILES = \
     pages/About.qml \
     pages/Changelog.qml \
-    pages/ContactUs.qml \
     rpm/mynokiablog.yaml \
     pages/Index.qml \
     pages/Search.qml

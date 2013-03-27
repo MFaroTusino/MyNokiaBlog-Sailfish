@@ -23,6 +23,16 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("Search.qml"))
             }
         }
+        PushUpMenu{
+            MenuItem{
+                text: "Back to top"
+               // onClicked: Move to top
+            }
+            MenuItem{
+                text: "Load More"
+                //onClicked: Load More posts
+            }
+        }
         
         // Tell SilicaFlickable the height of its content.
         contentHeight: childrenRect.height
@@ -34,8 +44,9 @@ Page {
             spacing: theme.paddingLarge
             PageHeader {
                 title: "Recent Posts"
+                id: pageHeader
             }
-            Label { 
+            Label {
                 anchors.left: parent.left; anchors.leftMargin: theme.paddingLarge
                 text: "List of recent posts go here"
                 color: theme.secondaryHighlightColor

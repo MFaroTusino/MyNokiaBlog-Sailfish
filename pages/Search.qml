@@ -12,7 +12,7 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: "About"
-                onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
+                onClicked: pageStack.replace(Qt.resolvedUrl("About.qml"))
             }
             MenuItem{
                 text: "Recent Posts"
