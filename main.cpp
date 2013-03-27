@@ -4,7 +4,6 @@
 #include <QtDeclarative/QDeclarativeView>
 #include <QtDeclarative/QDeclarativeContext>
 #include <QtDeclarative/qdeclarative.h>
-#include <QJson>
 
 #include "sailfishapplication.h"
 #include "author.h"

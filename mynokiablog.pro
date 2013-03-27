@@ -14,22 +14,16 @@ SOURCES += main.cpp \
     sharedobjectspool.cpp \
     postmodel.cpp \
     posthelper.cpp \
-    posthelper.cpp \
-    postmodel.cpp \
-    sharedobjectspool.cpp \
 
 # C++ headers
 HEADERS += \
     jsonhelper_p.h \
+    datetimeformat_p.h \
     author.h \
     post.h \
     sharedobjectspool.h \
-    datetimeformat_p.h \
     postmodel.h \
     posthelper.h \
-    posthelper.h \
-    postmodel.h \
-    sharedobjectspool.h \
 
 # QML files and folders
 qml.files = *.qml pages cover main.qml
@@ -47,5 +41,4 @@ OTHER_FILES = \
     rpm/mynokiablog.yaml \
     pages/Index.qml \
     pages/Search.qml \
-    pages/PostPage.qml \
-
+    pages/PostPage.qml

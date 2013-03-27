@@ -8,6 +8,7 @@ Page {
     PostModel {
         id: postModel
         Component.onCompleted: load("http://unleashthephones.com/api/get_recent_posts/")
+        onErrorChanged: console.debug(error)
     }
 
     // To enable PullDownMenu, place our content in a SilicaFlickable

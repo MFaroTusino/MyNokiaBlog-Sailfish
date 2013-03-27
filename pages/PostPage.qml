@@ -6,8 +6,6 @@ Page {
     id: page
     property Post post
 
-// onPostChanged: console.debug(post.content)
-
     TextArea {
         readOnly: true
         anchors.fill: parent

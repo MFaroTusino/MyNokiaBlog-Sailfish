@@ -5,12 +5,16 @@
 #include "post.h"
 #include "sharedobjectspool.h"
 #include "jsonhelper_p.h"
+#include <QtCore/QDebug>
 
 static const char *STATUS_KEY = "status";
 static const char *COUNT_KEY = "count";
 static const char *COUNT_TOTAL_KEY = "count_total";
 static const char *PAGES_KEY = "pages";
 static const char *POSTS_KEY = "posts";
+
+static const char *USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) \
+AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3";
 
 PostModel::PostModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -80,7 +84,10 @@ void PostModel::load(const QUrl &url, const QByteArray &arguments)
     emit countChanged();
     endRemoveRows();
 
-    m_reply = m_networkAccessManager->post(QNetworkRequest(url), arguments);
+    QNetworkRequest request (url);
+    request.setRawHeader("User-Agent", USER_AGENT);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    m_reply = m_networkAccessManager->post(request, arguments);
     connect(m_reply, SIGNAL(finished()), this, SLOT(slotFinished()));
     emit loadingChanged();
 }
@@ -101,7 +108,10 @@ void PostModel::loadMore(const QUrl &url)
     arguments.append("&page=");
     arguments.append(QByteArray::number(m_page));
 
-    m_reply = m_networkAccessManager->post(QNetworkRequest(url), arguments);
+    QNetworkRequest request (url);
+    request.setRawHeader("User-Agent", USER_AGENT);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    m_reply = m_networkAccessManager->post(request, arguments);
     connect(m_reply, SIGNAL(finished()), this, SLOT(slotFinished()));
     emit loadingChanged();
 }
