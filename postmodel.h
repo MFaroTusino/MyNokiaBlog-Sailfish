@@ -17,7 +17,8 @@ class PostModel: public QAbstractListModel
     Q_PROPERTY(int count READ count NOTIFY countChanged)
     Q_PROPERTY(bool loading READ loading NOTIFY loadingChanged)
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
-    Q_PROPERTY(QUrl url READ url WRITE setUrl NOTIFY urlChanged)
+    Q_PROPERTY(QUrl api READ api WRITE setApi NOTIFY apiChanged)
+    Q_PROPERTY(QString method READ method WRITE setMethod NOTIFY methodChanged)
 public:
     enum PostModelRoles {
         PostRole
@@ -31,18 +32,21 @@ public:
     int count() const;
     bool loading() const;
     QString error() const;
-    QUrl url() const;
+    QUrl api() const;
+    QString method() const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
 public slots:
-    void setUrl(const QUrl &url);
+    void setApi(const QUrl &api);
+    void setMethod(const QString &method);
     void load();
     void loadMore();
 signals:
     void countChanged();
     void loadingChanged();
     void errorChanged();
-    void urlChanged();
+    void apiChanged();
+    void methodChanged();
     void loaded();
 protected:
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -61,7 +65,8 @@ private:
     QString m_error;
     int m_page;
     int m_count;
-    QUrl m_url;
+    QUrl m_api;
+    QString m_method;
 private slots:
     void slotFinished();
 };

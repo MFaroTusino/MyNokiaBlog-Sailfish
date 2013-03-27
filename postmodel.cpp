@@ -5,7 +5,6 @@
 #include "post.h"
 #include "sharedobjectspool.h"
 #include "jsonhelper_p.h"
-#include <QtCore/QDebug>
 
 static const char *STATUS_KEY = "status";
 static const char *COUNT_KEY = "count";
@@ -44,9 +43,14 @@ QString PostModel::error() const
     return m_error;
 }
 
-QUrl PostModel::url() const
+QUrl PostModel::api() const
 {
-    return m_url;
+    return m_api;
+}
+
+QString PostModel::method() const
+{
+    return m_method;
 }
 
 int PostModel::rowCount(const QModelIndex &parent) const
@@ -74,11 +78,19 @@ QVariant PostModel::data(const QModelIndex &index, int role) const
     }
 }
 
-void PostModel::setUrl(const QUrl &url)
+void PostModel::setApi(const QUrl &api)
 {
-    if (m_url != url) {
-        m_url = url;
-        emit urlChanged();
+    if (m_api != api) {
+        m_api = api;
+        emit apiChanged();
+    }
+}
+
+void PostModel::setMethod(const QString &method)
+{
+    if (m_method != method) {
+        m_method = method;
+        emit methodChanged();
     }
 }
 
@@ -88,16 +100,18 @@ void PostModel::load()
         return;
     }
 
-    if (m_url.isEmpty()) {
+    if (m_api.isEmpty()) {
         return;
     }
 
-    QUrl url = m_url;
-    QString path = url.path();
-    path.append("/get_recent_posts/");
-    url.setPath(path);
+    if (m_method.isEmpty()) {
+        return;
+    }
 
-    qDebug() << url;
+    QUrl url = m_api;
+    QString path = url.path();
+    path.append(QString("/%1/").arg(m_method));
+    url.setPath(path);
 
     m_page = 1;
     m_count = 0;
@@ -122,7 +136,11 @@ void PostModel::loadMore()
         return;
     }
 
-    if (m_url.isEmpty()) {
+    if (m_api.isEmpty()) {
+        return;
+    }
+
+    if (m_method.isEmpty()) {
         return;
     }
 
@@ -130,9 +148,9 @@ void PostModel::loadMore()
         return;
     }
 
-    QUrl url = m_url;
+    QUrl url = m_api;
     QString path = url.path();
-    path.append("/get_recent_posts/");
+    path.append(QString("/%1/").arg(m_method));
     url.setPath(path);
 
     m_page ++;
@@ -145,7 +163,6 @@ void PostModel::loadMore()
     request.setRawHeader("User-Agent", USER_AGENT);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
-    qDebug() << url << arguments;
     m_reply = m_networkAccessManager->post(request, arguments);
     connect(m_reply, SIGNAL(finished()), this, SLOT(slotFinished()));
     emit loadingChanged();
@@ -169,7 +186,7 @@ void PostModel::setError(const QString &error)
 void PostModel::slotFinished()
 {
     if (m_reply->error() != QNetworkReply::NoError) {
-        setError("Network error");
+        setError("Network error: " + m_reply->errorString());
         m_reply->deleteLater();
         m_reply = 0;
         emit loadingChanged();
