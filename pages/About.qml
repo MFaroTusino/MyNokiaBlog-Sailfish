@@ -24,6 +24,7 @@ Page {
             }
         }
 
+
         // Tell SilicaFlickable the height of its content.
         contentHeight: childrenRect.height
 

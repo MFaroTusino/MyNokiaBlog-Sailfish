@@ -1,58 +1,64 @@
 import QtQuick 1.1
 import Sailfish.Silica 1.0
+import BlogViewer 1.0
 
 Page {
     id: page
-    
+
+    PostModel {
+        id: postModel
+        Component.onCompleted: load("http://unleashthephones.com/api/get_recent_posts/")
+    }
+
     // To enable PullDownMenu, place our content in a SilicaFlickable
-    SilicaFlickable {
+    SilicaListView {
+        id: view
         anchors.fill: parent
-        
-        // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
+        header: PageHeader {
+            title: qsTr("Recent Posts")
+        }
+        model: postModel
+        delegate: BackgroundItem {
+            onClicked: pageStack.push(Qt.resolvedUrl("PostPage.qml"), {post: model.post})
+
+            Label {
+                textFormat : Text.RichText
+                anchors.left: parent.left; anchors.leftMargin: theme.paddingLarge
+                anchors.right: parent.right; anchors.rightMargin: theme.paddingLarge
+                anchors.verticalCenter: parent.verticalCenter
+                text: model.post.title
+                truncationMode: TruncationMode.Fade
+            }
+        }
+
         PullDownMenu {
             MenuItem {
-                text: "About"
+                text: qsTr("About")
                 onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
             }
             MenuItem{
-                text: "Refresh posts"
-               // onClicked: //refresh()
-            }
-            MenuItem{
-                text: "Search"
+                text: qsTr("Search")
                 onClicked: pageStack.push(Qt.resolvedUrl("Search.qml"))
             }
-        }
-        PushUpMenu{
             MenuItem{
-                text: "Back to top"
-               // onClicked: Move to top
-            }
-            MenuItem{
-                text: "Load More"
-                //onClicked: Load More posts
+                text: qsTr("Reload")
+                onClicked: postModel.load("http://unleashthephones.com/api/get_recent_posts/")
             }
         }
-        
-        // Tell SilicaFlickable the height of its content.
-        contentHeight: childrenRect.height
-        
-        // Place our content in a Column.  The PageHeader is always placed at the top
-        // of the page, followed by our content.
-        Column {
-            width: page.width
-            spacing: theme.paddingLarge
-            PageHeader {
-                title: "Recent Posts"
-                id: pageHeader
+
+        PushUpMenu {
+            MenuItem {
+                text: qsTr("More")
+                onClicked: postModel.loadMore("http://unleashthephones.com/api/get_recent_posts/")
             }
-            Label {
-                anchors.left: parent.left; anchors.leftMargin: theme.paddingLarge
-                text: "List of recent posts go here"
-                color: theme.secondaryHighlightColor
-                font.pixelSize: theme.fontSizeLarge
+
+            MenuItem {
+                text: qsTr("Back to top")
+                onClicked: view.scrollToTop()
             }
         }
+
+        VerticalScrollDecorator {flickable: view}
     }
 }
 
