@@ -6,9 +6,36 @@ Page {
     id: page
     property Post post
 
-    TextArea {
-        readOnly: true
+    SilicaFlickable {
+        id: flickable
         anchors.fill: parent
-        text: post.content
-     }
+        contentHeight: column.height
+
+        Column {
+            id: column
+            width: flickable.width
+
+            PageHeader {
+                title: qsTr("Article")
+            }
+
+            Item {
+                width: parent.width
+                height: label.height + 2 * theme.paddingMedium
+
+                Label {
+                    id: label
+                    anchors.left: parent.left; anchors.leftMargin: theme.paddingMedium
+                    anchors.right: parent.right; anchors.rightMargin: theme.paddingMedium
+                    anchors.top: parent.top; anchors.topMargin: theme.paddingMedium
+                    text: post.content
+                    wrapMode: Text.WordWrap
+                 }
+            }
+
+        }
+
+    }
+
+
 }
